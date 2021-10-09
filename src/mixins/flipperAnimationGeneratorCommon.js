@@ -37,7 +37,6 @@ export default {
      */
     createMainBall (category) {
       let x = this.getRandomInt(500);
-      this.ballStar = 3;
 
       let body = Bodies.circle(x, 0, 23, {
         density: 20,
@@ -94,11 +93,14 @@ export default {
      * @param {'start_4'| 'start_5'} label
      * @returns {Body}
      */
-    createStar (x, y, label) {
+    createStar (category, x, y, label) {
       let color = { 'start_4': '#f5d259', 'start_5': '#f55a3c' };
 
       let body = Bodies.rectangle(x, y, 28, 28, {
-        isStatic: true, isSensor: true, label: label
+        isStatic: true, label: label,
+        collisionFilter: {
+          category: category
+        }
       });
 
       if (this.isCheckMode) {
@@ -161,7 +163,7 @@ export default {
      * @returns {Body}
      */
     createStar5 (x, y) {
-      return this.createStar(x, y, 'start_5');
+      return this.createStar(this.mainCategory, x, y, 'start_5');
     },
     /**
      * @param {number} x
@@ -169,23 +171,32 @@ export default {
      * @returns {Body}
      */
     createStar4 (x, y) {
-      return this.createStar(x, y, 'start_4');
+      return this.createStar(this.mainCategory, x, y, 'start_4');
     },
     /**
      * @param {number} x
      * @param {number} y
+     * @param {boolean} isZone
      * @returns {undefined|Body}
      */
-    createRandomStar (x, y) {
+    createRandomStar (x, y, isZone) {
+      let addStar =  (star)=> {
+        if(isZone){
+          if(this.addStarZoneRecorderData) this.addStarZoneRecorderData({star:star, x,y});
+        }else{
+          if(this.addStarRecorderData) this.addStarRecorderData({star:star, x,y});
+        }
+      }
+
       let n = this.getRandomInt(100);
       if (n < 30) {
         if (!this.isCheckMode && this.maxStarNum['5'] <= 0) return undefined;
-
+        addStar(5)
         this.maxStarNum['5']--;
         return this.createStar5(x, y);
       } else {
         if (!this.isCheckMode && this.maxStarNum['4'] <= 0) return undefined;
-
+        addStar(4)
         this.maxStarNum['4']--;
         return this.createStar4(x, y);
       }
@@ -208,7 +219,7 @@ export default {
         let x = xList[index % 2][i];
 
         if (this.isCheckMode || this.getRandomInt(100) < 15) {
-          let star = this.createRandomStar(x, y);
+          let star = this.createRandomStar(x, y, isZone);
 
           if (star) {
             pinList.push(star);
@@ -252,7 +263,9 @@ export default {
 
       for (let i = 0; i < xList[index % 2].length; i++) {
         if (this.isCheckMode || this.getRandomInt(100) > 40) {
-          pinList.push(this.createPin(this.mainCategory, xList[index % 2][i], y));
+          let x = xList[index % 2][i];
+          if (this.addIniPinRecorderData) this.addIniPinRecorderData({ x, y });
+          pinList.push(this.createPin(this.mainCategory, x, y));
         }
       }
 
@@ -391,6 +404,7 @@ export default {
       this.render.canvas = null;
       this.render.context = null;
       this.render.textures = {};
+      this.ballStar = 3;
     }
   }
 };

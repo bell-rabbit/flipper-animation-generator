@@ -6,11 +6,12 @@
 
 <script>
 import { Engine, Render, Runner, Composite, Events } from 'matter-js';
-import flipperAnimationGeneratorCommon from '../mixins/flipperAnimationGeneratorCommon';
+import common from '../mixins/flipperAnimationGeneratorCommon';
+import recorder from '../mixins/flipperAnimationGeneratorRecorder';
 
 export default {
   name: 'flipper_animation_generator',
-  mixins: [flipperAnimationGeneratorCommon],
+  mixins: [common, recorder],
   props: {
     width: {
       type: Number,
@@ -42,6 +43,7 @@ export default {
       });
 
       this.initMaxStar();
+      this.IniRecorderData()
 
       this.ball = this.createMainBall(this.mainCategory);
 
@@ -61,11 +63,12 @@ export default {
 
       Events.on(this.engine, 'collisionEnd', (e) => this.collisionRemoveDetect(e));
       Events.on(this.render, 'beforeRender', () => this.setBounds());
-
+      Events.on(this.render, 'afterRender', (e) => this.recorder(e));
       this.setFirstForce(400);
     },
     reload () {
       this.clear();
+      this.IniRecorderData();
       this.initGenerator();
     }
   },
