@@ -371,18 +371,6 @@ export default {
       if (this.render.bounds.max.y < this.cxHeight) {
         Bounds.translate(this.render.bounds, { x: 0, y: this.moveAmount });
       }
-
-      // console.log(this.render.bounds.max.y);
-
-      // moveTheBounds({x:0,y:moveAmount})
-      // Bounds.translate(this.render.bounds, {x:0,y:10});
-      // console.log(this.engine);
-      // this.render.bounds.min.x = 2000;
-      // this.render.bounds.min.y = this.bounds.y;
-      // this.bounds.y += 10;
-      //
-      // Bounds.translate(this.render.bounds, { x: 500, y :500 });
-      // // console.log(e);
     },
     /**
      * @param {number} timeout
@@ -396,12 +384,9 @@ export default {
       }, timeout);
     },
     clear () {
-      // World.clear(this.engine.world);
-      // Engine.clear(this.engine);
       World.clear(this.engine.world);
       Engine.clear(this.engine);
       Render.stop(this.render);
-      // Runner.stop(runner);
       this.render.canvas.remove();
       this.render.canvas = null;
       this.render.context = null;
