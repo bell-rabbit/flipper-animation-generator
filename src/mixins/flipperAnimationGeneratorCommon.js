@@ -1,4 +1,4 @@
-import { Bodies, Body, World, Bounds, Engine, Render } from 'matter-js';
+import { Bodies, Body, World, Bounds, Engine, Render, Events } from 'matter-js';
 
 export default {
   props: {
@@ -33,15 +33,16 @@ export default {
     },
     /**
      * @param {number} category
+     * @param {boolean} [isStatic]
      * @returns {Body}
      */
-    createMainBall (category) {
+    createMainBall (category, isStatic = false) {
       let x = this.getRandomInt(500);
 
       let body = Bodies.circle(x, 0, 23, {
         density: 20,
         restitution: 0.50,
-        isStatic: false,
+        isStatic: isStatic,
         frictionAir: 0.01,
         collisionFilter: {
           category: category
@@ -340,22 +341,25 @@ export default {
         ball.render.sprite.yScale = 0.7;
       }
     },
-    collisionChecking (e) {
-      e.pairs.forEach(a => {
-        if (a.bodyA.label === 'pin') {
-          setTimeout(() => {
-            World.remove(this.engine.world, a.bodyA);
-          }, 100);
-        } else if (a.bodyB.label === 'pin') {
-          setTimeout(() => {
-            World.remove(this.engine.world, a.bodyB);
-          }, 100);
-        } else if (a.bodyA.label === 'detect' || a.bodyB.label === 'detect') {
-          this.ball.frictionAir = 0.2;
-          this.moveAmount = 1;
-        } else if (a.bodyA.label === 'start_4' || a.bodyB.label === 'start_4') {
-          World.remove(this.engine.world, (a.bodyA.label === 'start_4') ? a.bodyA : a.bodyB);
+    removePin(world, body){
+      setTimeout(() => {
+        World.remove(world, body);
+      }, 100);
+    },
+    removeStar(world, body){
+      World.remove(this.engine.world, body);
+    },
+    /**
+     *
+     * @param {4 | 5} star
+     * @param world
+     * @param {Body} body
+     */
+    setBallStarAndRemoveStar(star, world, body){
+      this.removeStar(world, body);
 
+      switch (star){
+        case 4:
           if (this.ballStar < 4) {
             this.setBallStar(this.ball, 4);
             this.ballStar = 4;
@@ -363,11 +367,28 @@ export default {
             this.setBallStar(this.ball, 5);
             this.ballStar = 5;
           }
-        } else if (a.bodyA.label === 'start_5' || a.bodyB.label === 'start_5') {
-          World.remove(this.engine.world, (a.bodyA.label === 'start_5') ? a.bodyA : a.bodyB);
-
+          break;
+        case 5:
           if (this.ballStar < 5) this.setBallStar(this.ball, 5);
           this.ballStar = 5;
+          break;
+      }
+    },
+    collisionChecking (e) {
+      e.pairs.forEach(a => {
+        if (a.bodyA.label === 'pin') {
+          this.removePin(this.engine.world, a.bodyA);
+        } else if (a.bodyB.label === 'pin') {
+          this.removePin(this.engine.world, a.bodyB);
+        } else if (a.bodyA.label === 'detect' || a.bodyB.label === 'detect') {
+          this.ball.frictionAir = 0.2;
+          this.moveAmount = 1;
+        } else if (a.bodyA.label === 'start_4' || a.bodyB.label === 'start_4') {
+
+          this.setBallStarAndRemoveStar(4, this.engine.world, (a.bodyA.label === 'start_4') ? a.bodyA : a.bodyB);
+        } else if (a.bodyA.label === 'start_5' || a.bodyB.label === 'start_5') {
+
+          this.setBallStarAndRemoveStar(5, this.engine.world, (a.bodyA.label === 'start_5') ? a.bodyA : a.bodyB);
         }
       });
     },
@@ -391,15 +412,18 @@ export default {
     setFirstForce (timeout) {
       setTimeout(() => {
         let isPositive = this.getRandomInt(2);
-        console.log(isPositive);
 
         Body.applyForce(this.ball, this.ball.position, { x: [-1, 1][isPositive] * this.getRandomInt(250), y: 10 });
       }, timeout);
     },
     clear () {
+      Events.off(this.engine);
+      Events.off(this.render);
+
       World.clear(this.engine.world);
       Engine.clear(this.engine);
       Render.stop(this.render);
+
       this.render.canvas.remove();
       this.render.canvas = null;
       this.render.context = null;

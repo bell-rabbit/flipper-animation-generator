@@ -1,5 +1,14 @@
 import { World } from 'matter-js';
 
+/** @typedef  {Object} recorderPin
+ * @property {number} x
+ * @property {number} y
+ * @property {number} boundsY
+ * @property {{x:number, y:number}} [pin]
+ * @property {{x:number, y:number}} [star5]
+ * @property {{x:number, y:number}} [star4]
+ * */
+
 export default {
   data () {
     return {
@@ -20,7 +29,14 @@ export default {
     };
   },
   methods: {
-    IniRecorderData () {
+    /**
+     * @param {number} num
+     * @returns {number}
+     */
+    roundTwo (num) {
+      return Math.round(num * 100) / 100;
+    },
+    iniRecorderData () {
       this.recorderData = {
         detect: 0,
         pinCount: 0,
@@ -76,7 +92,12 @@ export default {
           star4 = checkABLabel(data, 'start_4');
         });
 
-        let position = { x: this.ball.position.x, y: this.ball.position.y };
+        /** @type {recorderPin} */
+        let position = {
+          x: this.roundTwo(this.ball.position.x),
+          y: this.roundTwo(this.ball.position.y),
+          boundsY: e.source.bounds.min.y
+        };
 
         addData(star5, position, 'star5');
         if (position.star5) this.recorderData.star5Count++;
