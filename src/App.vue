@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-      <flipper_animation_generator :is-check-mode="false" ref="fag" @completed="completed"/>
-      <input value="bu" @click="$refs.fag.reload()"/>
+      <flipper_animation_generator :is-check-mode="false" ref="fag" @completed="completed" v-model="json"/>
+      <input value="Random New Result" type="button" @click="reloadRandom"/>
+      <input value="Playback Json" type="button" @click="playback" style="margin-left: 10px"/>
     <br>
-    <textarea ref="textarea"/>
+    <H2 style="margin-bottom: 0">Data Json</H2><br>
+    <textarea ref="json" style="width: 500px; height: 600px"/>
   </div>
 </template>
 
@@ -15,11 +17,22 @@ export default {
   components: {
     flipper_animation_generator
   },
+  data () {
+    return {
+      json: {}
+    };
+  },
   methods: {
+    playback(){
+      this.json = JSON.parse(this.$refs.json.value);
+    },
+    reloadRandom(){
+      this.$refs.json.value ='';
+      this.json = {};
+      this.$refs.fag.reload();
+    },
     completed (e) {
-      this.$refs.textarea.value ='';
-      this.$refs.textarea.value = JSON.stringify(e);
-      console.log(e);
+      this.$refs.json.value = JSON.stringify(e);
     }
   },
 }
