@@ -10,7 +10,7 @@ import recorder from '../mixins/flipperAnimationGeneratorRecorder';
 import playback from '../mixins/flipperAnimationGeneratorPlayback';
 
 export default {
-  name: 'flipper_animation_generator',
+  name: 'flipperAnimationGenerator',
   mixins: [common, recorder, playback],
   props: {
     width: {
