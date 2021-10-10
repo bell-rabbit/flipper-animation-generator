@@ -6,7 +6,7 @@ import image from '@rollup/plugin-image';
 export default {
   input: 'src/components/index.js', // Path relative to package.json
   output: {
-    name: 'flipper_animation_generator',
+    name: 'flipper-animation-generator',
     exports: 'named',
     globals: {
       'matter-js': 'matter-js'
