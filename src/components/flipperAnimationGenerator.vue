@@ -32,6 +32,8 @@ export default {
   },
   methods: {
     initGenerator: function () {
+      this.checkProps();
+
       this.engine = Engine.create();
 
       this.render = Render.create({

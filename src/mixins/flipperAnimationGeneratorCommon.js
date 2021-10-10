@@ -6,6 +6,22 @@ export default {
       type: Boolean,
       default: true
     },
+    rndStarPin:{
+      type: Number,
+      default: 15
+    },
+    rndStar5:{
+      type: Number,
+      default: 30
+    },
+    maxStar:{
+      type: Number,
+      default: 5
+    },
+    rndPin:{
+      type: Number,
+      default: 60
+    }
   },
   data () {
     return {
@@ -20,10 +36,18 @@ export default {
       engine: null,
       render: null,
       bounds: { x: 0, y: 0 },
-      moveAmount: 4
+      moveAmount: 4,
+      starRepeatCheckTable:{}
     };
   },
   methods: {
+    checkProps(){
+      this.maxStar = this.maxStar > 42 ? 42: this.maxStar;
+      this.rndStarPin = this.maxStar > 42 ? 100: this.rndStarPin;
+      this.rndStarPin = this.rndStar5 <= 0 ? 100 : this.rndStarPin;
+      this.rndStarPin = this.rndStar5 >= 100 ? 100 : this.rndStarPin;
+
+    },
     /**
      * @param {number} max
      * @returns {number}
@@ -57,12 +81,16 @@ export default {
       let num = 0;
 
       for (let i = 0; i < 10; i++) {
-        num = this.getRandomInt(5);
+        num = this.getRandomInt(this.maxStar);
         if (num > 3) {
           break;
         }
       }
-      this.maxStarNum = { '4': num, '5': 5 - num };
+
+      if (this.rndStar5 >= 100) num = 0;
+      if(this.rndStar5 <= 0) num = this.maxStar;
+
+      this.maxStarNum = { '4': num, '5': this.maxStar - num };
     },
     /**
      * @returns {Body}
@@ -89,6 +117,7 @@ export default {
       return body;
     },
     /**
+     * @param {number} category
      * @param {number} x
      * @param {number} y
      * @param {'start_4'| 'start_5'} label
@@ -190,7 +219,7 @@ export default {
       }
 
       let n = this.getRandomInt(100);
-      if (n < 30) {
+      if (n < this.rndStar5) {
         if (!this.isCheckMode && this.maxStarNum['5'] <= 0) return undefined;
         addStar(5)
         this.maxStarNum['5']--;
@@ -219,12 +248,14 @@ export default {
       for (let i = 0; i < xList[index % 2].length; i++) {
         let x = xList[index % 2][i];
 
-        if (this.isCheckMode || this.getRandomInt(100) < 15) {
-          let star = this.createRandomStar(x, y, isZone);
+        if (this.isCheckMode || this.getRandomInt(100) < this.rndStarPin) {
+          if(this.starRepeatCheckTable[`${x}:${y}`]) continue;
 
+          let star = this.createRandomStar(x, y, isZone);
           if (star) {
             pinList.push(star);
             pinList.push(this.createDetect(this.detectCategory, x, y, isZone));
+            this.starRepeatCheckTable[`${x}:${y}`] = true;
           }
         }
       }
@@ -263,7 +294,7 @@ export default {
       let pinList = [];
 
       for (let i = 0; i < xList[index % 2].length; i++) {
-        if (this.isCheckMode || this.getRandomInt(100) > 40) {
+        if (this.isCheckMode || this.getRandomInt(100) < this.rndPin) {
           let x = xList[index % 2][i];
           if (this.addIniPinRecorderData) this.addIniPinRecorderData({ x, y });
           pinList.push(this.createPin(this.mainCategory, x, y));
@@ -429,6 +460,7 @@ export default {
       this.render.context = null;
       this.render.textures = {};
       this.ballStar = 3;
+      this.starRepeatCheckTable = {};
     }
   }
 };
