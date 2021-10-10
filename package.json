@@ -1,7 +1,7 @@
 {
-  "name": "flipper-animation-generator",
+  "name": "@bell-rabbit/flipper-animation-generator",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
@@ -27,6 +27,10 @@
     "rollup": "^1.17.0",
     "rollup-plugin-vue": "^5.0.1",
     "vue-template-compiler": "^2.6.11"
+  },
+  "repository": "git://github.com/bell-rabbit/flipper-animation-generator.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "eslintConfig": {
     "root": true,
