@@ -4,7 +4,7 @@ export default {
   props: {
     isCheckMode: {
       type: Boolean,
-      default: true
+      default: false
     },
     rndStarPin:{
       type: Number,
