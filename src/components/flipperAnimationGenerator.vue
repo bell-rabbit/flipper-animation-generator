@@ -1,6 +1,5 @@
 <template>
-  <div ref="FAG" :style="`background-image: url(${require('../textures/background.jpg')}); width:500px;height:896px`">
-
+  <div ref="FAG" :style="getStyle()">
   </div>
 </template>
 
@@ -20,7 +19,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 1769
+      default: 896
     },
     value: {
       type: Object,
@@ -31,23 +30,38 @@ export default {
     return {};
   },
   methods: {
-    initGenerator: function () {
+    getStyle () {
+      let h = this.height * (this.width / this.cxWidth);
+
+      return {
+        'background-image': `url(${require('../textures/background.jpg')})`,
+        'background-size': '100% auto',
+        'width': `${this.width}px`,
+        'height': `${h}px`
+      };
+    },
+    initGenerator () {
       this.checkProps();
 
       this.engine = Engine.create();
+      let zoom = this.width / this.cxWidth;
+      let maxZoomHeight = 896 * zoom;
+      let h = this.height * zoom > maxZoomHeight ? maxZoomHeight : this.height;
 
       this.render = Render.create({
         element: this.$refs.FAG,
         engine: this.engine,
         options: {
           width: this.cxWidth,
-          height: this.displayHeight,
+          height: h > 896 ? 896 : h,
           showVelocity: false,
           wireframes: false,
           hasBounds: true,
           background: 'transparent'
         }
       });
+
+      this.render.canvas.style.width = this.width + 'px';
 
       this.value.path ? this.playbackMode() : this.randomMode();
 
