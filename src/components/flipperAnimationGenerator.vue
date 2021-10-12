@@ -40,7 +40,7 @@ export default {
         'height': `${h}px`
       };
     },
-    initGenerator () {
+    initRender(){
       this.checkProps();
 
       this.engine = Engine.create();
@@ -62,7 +62,8 @@ export default {
       });
 
       this.render.canvas.style.width = this.width + 'px';
-
+    },
+    initGenerator () {
       this.value.path ? this.playbackMode() : this.randomMode();
 
       Render.run(this.render);
@@ -104,11 +105,12 @@ export default {
       this.clear();
       this.iniRecorderData();
       this.iniPaybackData();
+      this.initRender();
       this.initGenerator();
     }
   },
   mounted () {
-    this.initGenerator();
+    this.initRender();
   },
   watch: {
     value () {
