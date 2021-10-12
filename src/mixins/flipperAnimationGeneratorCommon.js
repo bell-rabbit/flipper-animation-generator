@@ -109,9 +109,9 @@ export default {
       }
 
       // if (!this.isCheckMode) {
-      //   body.render.sprite.texture = require('../textures/background.png');
-      //   body.render.sprite.xScale = 0.7;
-      //   body.render.sprite.yScale = 0.7;
+      //   body.render.sprite.texture = require('../textures/bg.jpg');
+      //   // body.render.sprite.xScale = 0.7;
+      //   // body.render.sprite.yScale = 0.7;
       // }
 
       return body;
@@ -364,8 +364,7 @@ export default {
             ball.render.sprite.texture = require('../textures/ball_4.png');
             break;
           case 5:
-            ball.render.sprite.texture = '';
-            ball.render.fillStyle = '#f55a3c';
+            ball.render.sprite.texture = require('../textures/ball_5.png');
             break;
         }
         ball.render.sprite.xScale = 0.7;
