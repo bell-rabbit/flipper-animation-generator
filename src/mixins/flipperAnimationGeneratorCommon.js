@@ -37,7 +37,9 @@ export default {
       render: null,
       bounds: { x: 0, y: 0 },
       moveAmount: 4,
-      starRepeatCheckTable:{}
+      starRepeatCheckTable:{},
+      allPinList:[],
+      allDetectList:[]
     };
   },
   methods: {
@@ -254,8 +256,12 @@ export default {
           let star = this.createRandomStar(x, y, isZone);
           if (star) {
             pinList.push(star);
-            pinList.push(this.createDetect(this.detectCategory, x, y, isZone));
-            this.starRepeatCheckTable[`${x}:${y}`] = true;
+
+            let body = this.createDetect(this.detectCategory, x, y, isZone);
+            pinList.push(body);
+
+            this.starRepeatCheckTable[`${x}:${y}`] = star;
+            this.allDetectList.push(body);
           }
         }
       }
@@ -297,7 +303,9 @@ export default {
         if (this.isCheckMode || this.getRandomInt(100) < this.rndPin) {
           let x = xList[index % 2][i];
           if (this.addIniPinRecorderData) this.addIniPinRecorderData({ x, y });
-          pinList.push(this.createPin(this.mainCategory, x, y));
+          let body = this.createPin(this.mainCategory, x, y);
+          this.allPinList.push(body);
+          pinList.push(body);
         }
       }
 
@@ -365,10 +373,24 @@ export default {
             break;
           case 5:
             ball.render.sprite.texture = require('../textures/ball_5.png');
+            this.removeAllPinAndStar(this.engine.world);
             break;
         }
         ball.render.sprite.xScale = 0.7;
         ball.render.sprite.yScale = 0.7;
+      }
+    },
+    removeAllPinAndStar(world){
+      this.allPinList.forEach((rs) =>{
+        this.removePin(world, rs);
+      });
+
+      this.allDetectList.forEach((rs) =>{
+        this.removeStar(world, rs);
+      })
+
+      for (let key in this.starRepeatCheckTable) {
+          this.removeStar(world, this.starRepeatCheckTable[key]);
       }
     },
     removePin(world, body){
