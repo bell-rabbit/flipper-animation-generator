@@ -81,11 +81,24 @@ export default {
         position.star5 && this.setBallStarAndRemoveStar(5, this.engine.world, this.itemTable.star[`${position.star5.x}:${position.star5.y}`]);
         position.star4 && this.setBallStarAndRemoveStar(4, this.engine.world, this.itemTable.star[`${position.star4.x}:${position.star4.y}`]);
 
+        if(this.ballStar === 5 ){
+          this.removeAllPlaybackPinAndStar(this.engine.world);
+        }
+
         this.ballPositionLength++;
       } else if (this.ballPositionLength === this.value.path.length) {
         World.remove(this.engine.world, this.ball);
       }
-    }
-  },
+    },
+    removeAllPlaybackPinAndStar(world){
 
+      for (let pinKey in this.itemTable.pin) {
+        this.removePin(world, this.itemTable.pin[pinKey]);
+      }
+
+      for (let starKey in this.itemTable.star) {
+        this.removeStar(world, this.itemTable.star[starKey])
+      }
+    }
+  }
 };
