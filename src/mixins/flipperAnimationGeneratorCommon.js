@@ -459,14 +459,18 @@ export default {
         let moveAmount = this.moveAmount;
         let positionY = this.ball.position.y - this.ballLastY;
 
-        if(positionY > 30){
-          moveAmount = 20;
+        let fast = (this.render.bounds.max.y - this.ball.position.y < 300)?  1.5 : 1;
+
+        if (positionY > 40){
+          moveAmount = positionY * fast;
+        }else if(positionY > 30){
+          moveAmount = 25 * fast;
         }
         else if(positionY > 25) {
-          moveAmount = 15;
+          moveAmount = 15 * fast;
         }
         else if (positionY > 20) {
-          moveAmount = 13;
+          moveAmount = 13 * fast;
         }
 
         Bounds.translate(this.render.bounds, { x: 0, y: moveAmount  });
