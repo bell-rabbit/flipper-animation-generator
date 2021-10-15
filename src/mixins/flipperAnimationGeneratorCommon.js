@@ -459,7 +459,10 @@ export default {
         let moveAmount = this.moveAmount;
         let positionY = this.ball.position.y - this.ballLastY;
 
-        if (positionY > 25) {
+        if(positionY > 30){
+          moveAmount = 20;
+        }
+        else if(positionY > 25) {
           moveAmount = 15;
         }
         else if (positionY > 20) {
