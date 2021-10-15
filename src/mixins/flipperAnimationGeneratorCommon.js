@@ -130,6 +130,7 @@ export default {
 
       let body = Bodies.rectangle(x, y, 28, 28, {
         isStatic: true, label: label,
+        isSensor: true,
         collisionFilter: {
           category: category
         }
@@ -382,7 +383,7 @@ export default {
     },
     removeAllPinAndStar(world){
       this.allPinList.forEach((rs) =>{
-        this.removePin(world, rs);
+        this.removePin(world, rs, 0);
       });
 
       this.allDetectList.forEach((rs) =>{
@@ -393,10 +394,10 @@ export default {
           this.removeStar(world, this.starRepeatCheckTable[key]);
       }
     },
-    removePin(world, body){
+    removePin(world, body, time = 100){
       setTimeout(() => {
         World.remove(world, body);
-      }, 100);
+      }, time);
     },
     removeStar(world, body){
       World.remove(this.engine.world, body);
@@ -409,7 +410,7 @@ export default {
      */
     setBallStarAndRemoveStar(star, world, body){
       this.removeStar(world, body);
-
+      this.engine.timing.timeScale = 0.5;
       switch (star){
         case 4:
           if (this.ballStar < 4) {
@@ -433,7 +434,7 @@ export default {
         } else if (a.bodyB.label === 'pin') {
           this.removePin(this.engine.world, a.bodyB);
         } else if (a.bodyA.label === 'detect' || a.bodyB.label === 'detect') {
-          this.ball.frictionAir = 0.2;
+          this.engine.timing.timeScale = 0.1;
           this.moveAmount = 1;
         } else if (a.bodyA.label === 'start_4' || a.bodyB.label === 'start_4') {
 
@@ -447,7 +448,7 @@ export default {
     collisionRemoveDetect (e) {
       e.pairs.forEach(a => {
         if (a.bodyA.label === 'detect' || a.bodyB.label === 'detect') {
-          this.ball.frictionAir = 0.01;
+          this.engine.timing.timeScale = 1;
           this.moveAmount = 4;
         }
       });
