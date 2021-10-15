@@ -88,6 +88,8 @@ export default {
         this.ballPositionLength++;
       } else if (this.ballPositionLength === this.value.path.length) {
         World.remove(this.engine.world, this.ball);
+        this.$emit('completed-playback');
+        this.ballPositionLength++;
       }
     },
     removeAllPlaybackPinAndStar(world){
