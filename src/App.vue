@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <flipper-animation-generator :is-check-mode="false" ref="fag" @completed="completed" v-model="json"/>
+    <flipper-animation-generator :is-check-mode="false" ref="fag" @completed="completed" v-model="json" @completed-playback="completedPlayback"/>
       <input value="Random New Result" type="button" @click="reloadRandom"/>
       <input value="Playback Json" type="button" @click="playback" style="margin-left: 10px"/>
     <br>
@@ -33,6 +33,9 @@ export default {
     },
     completed (e) {
       this.$refs.json.value = JSON.stringify(e);
+    },
+    completedPlayback () {
+      console.log('completedPlayback');
     }
   },
 }
