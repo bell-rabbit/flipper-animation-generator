@@ -160,8 +160,8 @@ export default {
      * @returns {Body[]}
      */
     createWall () {
-      const wallLeft = Bodies.rectangle(0, 0, 3, this.cxHeight * 2, { isStatic: true });
-      const wallRight = Bodies.rectangle(this.cxWidth, 0, 3, this.cxHeight * 2, { isStatic: true });
+      const wallLeft = Bodies.rectangle(-40, 0, 43, this.cxHeight * 2, { isStatic: true });
+      const wallRight = Bodies.rectangle(this.cxWidth + 40, 0, 43, this.cxHeight * 2, { isStatic: true });
 
       return [wallLeft, wallRight];
     },
