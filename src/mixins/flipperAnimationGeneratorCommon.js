@@ -6,19 +6,19 @@ export default {
       type: Boolean,
       default: false
     },
-    rndStarPin:{
+    rndStarPin: {
       type: Number,
       default: 15
     },
-    rndStar5:{
+    rndStar5: {
       type: Number,
       default: 30
     },
-    maxStar:{
+    maxStar: {
       type: Number,
       default: 5
     },
-    rndPin:{
+    rndPin: {
       type: Number,
       default: 60
     }
@@ -37,15 +37,16 @@ export default {
       render: null,
       bounds: { x: 0, y: 0 },
       moveAmount: 4,
-      starRepeatCheckTable:{},
-      allPinList:[],
-      allDetectList:[]
+      starRepeatCheckTable: {},
+      allPinList: [],
+      allDetectList: [],
+      ballLastY: 0
     };
   },
   methods: {
-    checkProps(){
-      this.maxStar = this.maxStar > 42 ? 42: this.maxStar;
-      this.rndStarPin = this.maxStar > 42 ? 100: this.rndStarPin;
+    checkProps () {
+      this.maxStar = this.maxStar > 42 ? 42 : this.maxStar;
+      this.rndStarPin = this.maxStar > 42 ? 100 : this.rndStarPin;
       this.rndStarPin = this.rndStar5 <= 0 ? 100 : this.rndStarPin;
       this.rndStarPin = this.rndStar5 >= 100 ? 100 : this.rndStarPin;
 
@@ -90,7 +91,7 @@ export default {
       }
 
       if (this.rndStar5 >= 100) num = 0;
-      if(this.rndStar5 <= 0) num = this.maxStar;
+      if (this.rndStar5 <= 0) num = this.maxStar;
 
       this.maxStarNum = { '4': num, '5': this.maxStar - num };
     },
@@ -213,23 +214,23 @@ export default {
      * @returns {undefined|Body}
      */
     createRandomStar (x, y, isZone) {
-      let addStar =  (star)=> {
-        if(isZone){
-          if(this.addStarZoneRecorderData) this.addStarZoneRecorderData({star:star, x,y});
-        }else{
-          if(this.addStarRecorderData) this.addStarRecorderData({star:star, x,y});
+      let addStar = (star) => {
+        if (isZone) {
+          if (this.addStarZoneRecorderData) this.addStarZoneRecorderData({ star: star, x, y });
+        } else {
+          if (this.addStarRecorderData) this.addStarRecorderData({ star: star, x, y });
         }
-      }
+      };
 
       let n = this.getRandomInt(100);
       if (n < this.rndStar5) {
         if (!this.isCheckMode && this.maxStarNum['5'] <= 0) return undefined;
-        addStar(5)
+        addStar(5);
         this.maxStarNum['5']--;
         return this.createStar5(x, y);
       } else {
         if (!this.isCheckMode && this.maxStarNum['4'] <= 0) return undefined;
-        addStar(4)
+        addStar(4);
         this.maxStarNum['4']--;
         return this.createStar4(x, y);
       }
@@ -252,7 +253,7 @@ export default {
         let x = xList[index % 2][i];
 
         if (this.isCheckMode || this.getRandomInt(100) < this.rndStarPin) {
-          if(this.starRepeatCheckTable[`${x}:${y}`]) continue;
+          if (this.starRepeatCheckTable[`${x}:${y}`]) continue;
 
           let star = this.createRandomStar(x, y, isZone);
           if (star) {
@@ -381,25 +382,25 @@ export default {
         ball.render.sprite.yScale = 0.7;
       }
     },
-    removeAllPinAndStar(world){
-      this.allPinList.forEach((rs) =>{
+    removeAllPinAndStar (world) {
+      this.allPinList.forEach((rs) => {
         this.removePin(world, rs, 0);
       });
 
-      this.allDetectList.forEach((rs) =>{
+      this.allDetectList.forEach((rs) => {
         this.removeStar(world, rs);
-      })
+      });
 
       for (let key in this.starRepeatCheckTable) {
-          this.removeStar(world, this.starRepeatCheckTable[key]);
+        this.removeStar(world, this.starRepeatCheckTable[key]);
       }
     },
-    removePin(world, body, time = 100){
+    removePin (world, body, time = 100) {
       setTimeout(() => {
         World.remove(world, body);
       }, time);
     },
-    removeStar(world, body){
+    removeStar (world, body) {
       World.remove(this.engine.world, body);
     },
     /**
@@ -408,10 +409,10 @@ export default {
      * @param world
      * @param {Body} body
      */
-    setBallStarAndRemoveStar(star, world, body){
+    setBallStarAndRemoveStar (star, world, body) {
       this.removeStar(world, body);
       this.engine.timing.timeScale = 0.5;
-      switch (star){
+      switch (star) {
         case 4:
           if (this.ballStar < 4) {
             this.setBallStar(this.ball, 4);
@@ -454,9 +455,19 @@ export default {
       });
     },
     setBounds () {
-
       if (this.render.bounds.max.y < this.cxHeight) {
-        Bounds.translate(this.render.bounds, { x: 0, y: this.moveAmount });
+        let moveAmount = this.moveAmount;
+        let positionY = this.ball.position.y - this.ballLastY;
+
+        if (positionY > 25) {
+          moveAmount = 15;
+        }
+        else if (positionY > 20) {
+          moveAmount = 13;
+        }
+
+        Bounds.translate(this.render.bounds, { x: 0, y: moveAmount  });
+        this.ballLastY = this.ball.position.y;
       }
     },
     /**
@@ -483,6 +494,7 @@ export default {
       this.render.textures = {};
       this.ballStar = 3;
       this.starRepeatCheckTable = {};
+      this.ballLastY = 0;
     }
   }
 };
