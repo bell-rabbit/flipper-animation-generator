@@ -3,7 +3,10 @@
 ![GitHub issues](https://img.shields.io/github/issues/bell-rabbit/flipper-animation-generator?style=for-the-badge)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/bell-rabbit/flipper-animation-generator?style=for-the-badge)](/LICENSE)
 
-## install
+## Demo
+https://bell-rabbit.github.io/flipper-animation-generator/
+
+## Install
 ```sh
 npm install @bell-rabbit/flipper-animation-generator@1.1.0
 ```
