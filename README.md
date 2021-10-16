@@ -1,4 +1,7 @@
 # flipper_animation_generator
+[![License](https://img.shields.io/github/license/bell-rabbit/flipper-animation-generator?style=for-the-badge)](/LICENSE)
+![GitHub issues](https://img.shields.io/github/issues/bell-rabbit/flipper-animation-generator?style=for-the-badge)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/bell-rabbit/flipper-animation-generator?style=for-the-badge)](/LICENSE)
 
 ## install
 ```sh
@@ -86,3 +89,7 @@ export default {
 | rndPin              | Number   | 60            | Max 100, probability for create <img src="/src/textures/pin.png" width="50" />                                                                                    |
 | @completed          | function | ---           | Argument 1: the path json                                                                                                                                         |
 | @completed-playback | function | ---           | no arguments                                                                                                                                                      |
+
+## License
+
+[MIT](LICENSE) © Andy Pang
