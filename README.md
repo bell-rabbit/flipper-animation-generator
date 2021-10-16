@@ -74,15 +74,15 @@ export default {
 ```
 
 ## Component Attribute
-| Attribute Name      | Type     | Default Value | Description                                                                                                                                               |
-|---------------------|----------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| value               | object   | {}            | {} => generate new path, else playback mode                                                                                                               |
-| width               | Number   | 500           |                                                                                                                                                           |
-| height              | Number   | 896           |                                                                                                                                                           |
-| isCheckMode         | Boolean  | false         | show all <img src="/src/textures/pin.png" width="50" />, <img src="/textures/star_4.png" width="50" />, and <img src="/textures/star_5.png" width="50" /> |
-| rndStarPin          | Number   | 15            | Max 100, probability for create <img src="/textures/star_4.png" width="50" /> and <img src="/textures/star_5.png" width="50" />                           |
-| rndStar5            | Number   | 30            | Max 100, probability for create <img src="/textures/star_5.png" width="50" />                                                                             |
-| maxStar             | Number   | 5             | Max 42, Number of the <img src="/textures/star_4.png" width="50" /> and <img src="/textures/star_5.png" width="50" /> total                               |
-| rndPin              | Number   | 60            | Max 100, probability for create <img src="/src/textures/pin.png" width="50" />                                                                            |
-| @completed          | function | ---           | Argument 1: the path json                                                                                                                                 |
-| @completed-playback | function | ---           | no arguments                                                                                                                                              |
+| Attribute Name      | Type     | Default Value | Description                                                                                                                                                       |
+|---------------------|----------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| value               | object   | {}            | {} => generate new path, else playback mode                                                                                                                       |
+| width               | Number   | 500           |                                                                                                                                                                   |
+| height              | Number   | 896           |                                                                                                                                                                   |
+| isCheckMode         | Boolean  | false         | show all <img src="/src/textures/pin.png" width="50" />, <img src="/src/textures/star_4.png" width="50" />, and <img src="/src/textures/star_5.png" width="50" /> |
+| rndStarPin          | Number   | 15            | Max 100, probability for create <img src="/src/textures/star_4.png" width="50" /> and <img src="/src/textures/star_5.png" width="50" />                           |
+| rndStar5            | Number   | 30            | Max 100, probability for create <img src="/src/textures/star_5.png" width="50" />                                                                                 |
+| maxStar             | Number   | 5             | Max 42, Number of the <img src="/src/textures/star_4.png" width="50" /> and <img src="/src/textures/star_5.png" width="50" /> total                               |
+| rndPin              | Number   | 60            | Max 100, probability for create <img src="/src/textures/pin.png" width="50" />                                                                                    |
+| @completed          | function | ---           | Argument 1: the path json                                                                                                                                         |
+| @completed-playback | function | ---           | no arguments                                                                                                                                                      |
