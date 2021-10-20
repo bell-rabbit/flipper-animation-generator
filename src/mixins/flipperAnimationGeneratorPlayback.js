@@ -86,7 +86,7 @@ export default {
         }
 
         this.ballPositionLength++;
-      } else if (this.ballPositionLength === this.value.path.length) {
+      } else if (this.ballPositionLength === this.value.path.length - 1) {
         Body.setStatic(this.ball, true);
 
         this.$emit('completed-playback');
