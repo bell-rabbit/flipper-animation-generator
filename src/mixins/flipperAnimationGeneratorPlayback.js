@@ -1,4 +1,4 @@
-import { Body, World, Bounds } from 'matter-js';
+import { Body, Bounds } from 'matter-js';
 
 export default {
   data () {
@@ -69,7 +69,7 @@ export default {
       return list;
     },
     setBallPosition () {
-      if (this.ballPositionLength < this.value.path.length) {
+      if (this.ballPositionLength < this.value.path.length - 1) {
 
         /** @type {recorderPin} */
         let position = this.value.path[this.ballPositionLength];
@@ -87,7 +87,8 @@ export default {
 
         this.ballPositionLength++;
       } else if (this.ballPositionLength === this.value.path.length) {
-        World.remove(this.engine.world, this.ball);
+        Body.setStatic(this.ball, true);
+
         this.$emit('completed-playback');
         this.ballPositionLength++;
       }
